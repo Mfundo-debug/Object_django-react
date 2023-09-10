@@ -44,3 +44,10 @@
 .registration-form button:hover {
     background-color: #197854; /* Darker shade on hover */
 }
+
+.logo {
+    max-width: 100px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom:20px ;
+}
