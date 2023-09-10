@@ -7,6 +7,8 @@ from rest_framework import status
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 # Create your views here.
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -34,7 +36,7 @@ class UserRegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         #Handles POST requests here
         return super().post(request, *args, **kwargs)
-    
+       
 @csrf_exempt
 def user_registration(request):
     if request.method == 'POST':
@@ -45,13 +47,15 @@ def user_registration(request):
         email_address = data.get('email_address', "")
         residential_address = data.get('residential_address', "")
         student_identity_number = data.get('student_identity_number', "")
+        
 
         user = User(
             first_name=first_name,
             last_name=last_name,
             email_address=email_address,
             residential_address=residential_address,
-            student_identity_number=student_identity_number
+            student_identity_number=student_identity_number,
+            
         )
         user.save()
         #Return a JSON response with a status code of 201 created
@@ -59,3 +63,4 @@ def user_registration(request):
     else:
         #Return a JSON response with a status code of 405 method not allowed
         return JsonResponse({'message': 'This is a POST request!'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    

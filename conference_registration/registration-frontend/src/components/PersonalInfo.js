@@ -1,13 +1,34 @@
 import React from 'react';
+import validator from 'validator';
 import './RegistrationForm.css'
 
 function PersonalInfo({formData, setFormData}){
     const handleChange = (e) => {
         const {name, value} = e.target;
+        //check if the input is an email address before updating the state
+        if (name === 'email_address') {
+            if (!validator.isEmail(value)){
+                //handle the invalid address
+                alert('Please enter a valid email address');
+            } else {
+                //update the state
+                setFormData({
+                    ...formData,
+                    [name]: value,
+                });
+            } 
+        }
+        else if (name === 'student_identity_number' && !validator.isNumeric(value)){
+            //alert the user if the student number is invalid
+            alert('Please enter a valid student number');
+            return;
+        }
+        else {
         setFormData({
             ...formData,
             [name]: value,
-        }); 
+        });
+    } 
     };
 
 return (

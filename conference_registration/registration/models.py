@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 # Create your models here.
 class User(models.Model):
@@ -18,6 +20,23 @@ class User(models.Model):
     email_address = models.EmailField(max_length=254)
     residential_address = models.CharField(max_length=100)
     student_identity_number = models.CharField(max_length=10, unique=True)
+    system_email = models.EmailField(max_length=254, unique=True, blank=True, null=True)
+
+
+    def generate_system_email(instance):
+        first_name = instance.first_name.replace(' ', '')
+        last_name = instance.last_name
+        initials = first_name[0] + last_name[0]
+        system_email = f"{last_name}{initials}@SmartSystem.com"
+        count = User.objects.filter(system_email=system_email).count()
+        if count > 0:
+            system_email = f"{system_email}{count+1:02d}"
+        return system_email
+    
+    @receiver(pre_save, sender='registration.User')
+    def generate_and_assign_system_email(sender, instance, *args, **kwargs):
+        if not instance.system_email:
+            instance.system_email = User.generate_system_email(instance)
 
     def __str__(self) -> str:
         return super().__str__()
