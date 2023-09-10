@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+//import this image C:\Users\didit\OneDrive\Desktop\Object_django-react\conference_registration\registration-frontend\src\components\OIP.jpeg
+import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
 
@@ -39,6 +41,7 @@ const handleSubmit = async (e) => {
 return (
   <div className={"registration-form"}>
     <h1>Registration Form</h1>
+    <img src={OIP} alt="Logo" className="logo" />
     <form onSubmit={handleSubmit}>
       <PersonalInfo formData={formData} setFormData={setFormData} />
       <button type="submit">Submit</button>
