@@ -7,7 +7,8 @@ function PersonalInfo({formData, setFormData}){
         setFormData({
             ...formData,
             [name]: value,
-        }); };
+        }); 
+    };
 
 return (
     <div>

@@ -1,9 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
 
 function RegistrationForm(){
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     email_address: "",
@@ -16,14 +16,14 @@ const handleSubmit = async (e) => {
 
   try {
     //Send a POST request to my Django backend API
-    const respose = await fetch("http://localhost:8000/api/register/", {
+    const response = await fetch("http://localhost:8000/api/register/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
     });
-    if (Response.ok){
+    if (response.ok){
       //Registration successful
       alert("Registration successful");
     } else {
