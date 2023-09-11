@@ -21,7 +21,7 @@ class User(models.Model):
     email_address = models.EmailField(max_length=254)
     residential_address = models.CharField(max_length=100)
     student_identity_number = models.CharField(max_length=10, unique=True)
-    system_email = models.EmailField(max_length=254, unique=True, blank=True, null=True)
+    system_email = models.EmailField(max_length=254, blank=True, null=True)
     dob = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10, null=True)
     country = models.CharField(max_length=30, null=True)
@@ -35,17 +35,18 @@ class User(models.Model):
         else:
             first_name_initial = first_name[0]
         email_prefix = f"{last_name}{first_name_initial}"
-        existing_emails = User.objects.filter(system_email__startswith=email_prefix).values_list("system_email", flat=True)
-        email_numbers = [int(email.split("@")[0][-2:]) for email in existing_emails if email.split("@")[0][-2:].isdigit()]
-        if not email_numbers:
-            return f"{email_prefix}@SmartSystem.com"
-        else:
-            next_number = max(email_numbers) + 1
-            while True:
-                system_email = f"{email_prefix}{next_number:02}@SmartSystem.com"
-                if not User.objects.filter(system_email=system_email).exists():
-                    return system_email
-                next_number += 1
+        email_suffix = ""
+
+        while True:
+            system_email = f"{email_prefix}{email_suffix}@SmartSystem.com"
+            if not User.objects.filter(system_email=system_email).exists():
+                return system_email
+        # Increment the email_suffix
+            if not email_suffix:
+                email_suffix = "01"
+            else:
+                email_suffix = f"{int(email_suffix) + 1:02d}"
+
     
     @receiver(pre_save, sender='registration.User')
     def generate_and_assign_system_email(sender, instance, *args, **kwargs):
