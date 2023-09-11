@@ -1,5 +1,5 @@
 import React from 'react';
-import '/RegistrationForm.css';
+import './RegistrationForm.css';
 
 function ConfirmationPage(props){
     //Extract the user_id from the query parameter
