@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import OIP from "./OIP.jpeg";
-import PersonalInfo from "./PersonalInfo";//
-import "./RegistrationForm.css";//
+import PersonalInfo from "./PersonalInfo";
+import "./RegistrationForm.css";
 
 function RegistrationForm(){
   const navigate = useNavigate();

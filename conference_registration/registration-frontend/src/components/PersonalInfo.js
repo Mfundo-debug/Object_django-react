@@ -91,6 +91,7 @@ function PersonalInfo({ formData, setFormData }) {
         </select>
         <select name="country" value={formData.country} onChange={handleChange}>
   <option value="Select a Country">Select a Country</option>
+  <option value="South Africa">South Africa</option>
   <option value="USA">USA</option>
   <option value="Canada">Canada</option>
   <option value="UK">UK</option>
