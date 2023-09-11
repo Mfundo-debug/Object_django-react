@@ -1,14 +1,16 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Import BrowserRouter
 import RegistrationForm from "./components/RegistrationForm";
+import ConfirmationPage from "./components/ConfirmationPage";
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter> {/* Wrap your entire application with BrowserRouter */}
-        <RegistrationForm />
-      </BrowserRouter>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<RegistrationForm />} />
+        <Route path="/confirmation" element={<ConfirmationPage />} />
+      </Routes>
+    </Router>
   );
 }
 
