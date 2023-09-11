@@ -29,20 +29,28 @@ class User(models.Model):
     age = models.IntegerField(null=True)
 
 
-    def generate_system_email(instance):
-        first_name = instance.first_name.split()[0]
-        last_name = instance.last_name
-        initials = first_name[0]
-        system_email = f"{last_name}{initials}@SmartSystem.com"
-        count = User.objects.filter(system_email=system_email).count()
-        if count > 0:
-            system_email = f"{system_email}{count+1:02d}"
-        return system_email
+    def generate_system_email(first_name, last_name):
+        if " " in first_name:
+            first_name_initial = "".join([name[0] for name in first_name.split()])
+        else:
+            first_name_initial = first_name[0]
+        email_prefix = f"{last_name}{first_name_initial}"
+        existing_emails = User.objects.filter(system_email__startswith=email_prefix).values_list("system_email", flat=True)
+        email_numbers = [int(email.split("@")[0][-2:]) for email in existing_emails if email.split("@")[0][-2:].isdigit()]
+        if not email_numbers:
+            return f"{email_prefix}@SmartSystem.com"
+        else:
+            next_number = max(email_numbers) + 1
+            while True:
+                system_email = f"{email_prefix}{next_number:02}@SmartSystem.com"
+                if not User.objects.filter(system_email=system_email).exists():
+                    return system_email
+                next_number += 1
     
     @receiver(pre_save, sender='registration.User')
     def generate_and_assign_system_email(sender, instance, *args, **kwargs):
         if not instance.system_email:
-            instance.system_email = User.generate_system_email(instance)
+            instance.system_email = User.generate_system_email(instance.first_name, instance.last_name)
 
     def __str__(self) -> str:
         return super().__str__()
