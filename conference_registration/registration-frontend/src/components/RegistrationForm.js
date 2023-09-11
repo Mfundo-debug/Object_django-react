@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import { useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";//
 import "./RegistrationForm.css";//
 
-function RegistrationForm(){
-  const history = useHistory();
+function RegistrationForm(props){
+  const history = props;
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -72,4 +72,4 @@ return (
   </div>
 );
 }
-export default RegistrationForm;
+export default withRouter(RegistrationForm);
