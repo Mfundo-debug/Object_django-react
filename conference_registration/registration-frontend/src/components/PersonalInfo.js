@@ -85,11 +85,13 @@ function PersonalInfo({ formData, setFormData }) {
           value={formData.dob}
           onChange={handleChange}
         />
-        <select name="gender" value={formData.gender} onChange={handleChange}>
+        <select className='gender-select' name="gender" value={formData.gender} onChange={handleChange}>
+          <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
-        <select name="country" value={formData.country} onChange={handleChange}>
+        <select className='country-select' name="country" value={formData.country} onChange={handleChange}>
+  <option value="">Select Country</option>
   <option value="Select a Country">Select a Country</option>
   <option value="South Africa">South Africa</option>
   <option value="USA">USA</option>
