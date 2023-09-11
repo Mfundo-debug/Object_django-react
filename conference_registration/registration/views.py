@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import datetime
+from django.http import HttpResponse
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 # Create your views here.
@@ -37,7 +38,12 @@ class UserRegistrationView(generics.CreateAPIView):
     def post(self, request, *args, **kwargs):
         #Handles POST requests here
         return super().post(request, *args, **kwargs)
-       
+
+def options_view(request):
+    #Handles OPTIONS requests here
+    return HttpResponse()
+
+
 def ID_validation(student_identity_number, dob, gender, country):
         #Check if the provided ID matches the South African format
         if len(student_identity_number) == 13 and student_identity_number.isdigit():
@@ -93,7 +99,8 @@ def user_registration(request):
         nationality = data.get('nationality', "")
 
         student_info = ID_validation(student_identity_number,dob,gender,country,age)
-        
+        #extract the relevant components from the student_info tuple
+        student_identity_number, age, gender, nationality, country = student_info
 
         user = User(
             first_name=first_name,
