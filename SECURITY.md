@@ -13,4 +13,4 @@
 ## Reporting a Vulnerability
 
 Still underconstruction :x: expect errors from the API backend or frontend :accessibility:
-But hopefully soon this project will sorted 👍
+But hopefully soon this project will be sorted 👍
