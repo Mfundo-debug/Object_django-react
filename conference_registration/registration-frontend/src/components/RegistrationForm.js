@@ -1,16 +1,22 @@
 import React, {useState} from "react";
-//import this image C:\Users\didit\OneDrive\Desktop\Object_django-react\conference_registration\registration-frontend\src\components\OIP.jpeg
+import { useHistory } from "react-router";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
 
 function RegistrationForm(){
+  const history = useHistory();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
     email_address: "",
     residential_address: "",
     student_identity_number: "",
+    dob: "",
+    gender: "",
+    country: "",
+    age: "",
+    nationality: "",
 });
 
 const handleSubmit = async (e) => {
@@ -27,7 +33,24 @@ const handleSubmit = async (e) => {
     });
     if (response.ok){
       //Registration successful
+      const data = await response.json();
+      history.push(`/confirmation?user_id=${data.user_id}`);
       alert("Registration successful");
+      //clear the form or reset it as needed
+      setFormData({
+        first_name: "",
+        last_name: "",
+        email_address: "",
+        residential_address: "",
+        student_identity_number: "",
+        dob: "",
+        gender: "",
+        country: "",
+        age: "",
+        nationality: "",
+      });
+      //Handle the response data if needed
+      console.log("Response Data:",data);
     } else {
       //Registration failed
       alert("Registration failed. Please try again");
