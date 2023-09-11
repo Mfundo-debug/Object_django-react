@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import { withRouter } from "react-router";
+import { useNavigate } from "react-router-dom";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";//
 import "./RegistrationForm.css";//
 
-function RegistrationForm(props){
-  const history = props;
+function RegistrationForm(){
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -34,7 +34,7 @@ const handleSubmit = async (e) => {
     if (response.ok){
       //Registration successful
       const data = await response.json();
-      history.push(`/confirmation?user_id=${data.user_id}`);
+      navigate(`/confirmation?user_id=${data.user_id}`);
       alert("Registration successful");
       //clear the form or reset it as needed
       setFormData({
@@ -72,4 +72,4 @@ return (
   </div>
 );
 }
-export default withRouter(RegistrationForm);
+export default RegistrationForm;
