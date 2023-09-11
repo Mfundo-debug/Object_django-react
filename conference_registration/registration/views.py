@@ -7,6 +7,7 @@ from rest_framework import status
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import datetime
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 # Create your views here.
@@ -37,6 +38,44 @@ class UserRegistrationView(generics.CreateAPIView):
         #Handles POST requests here
         return super().post(request, *args, **kwargs)
        
+def ID_validation(student_identity_number, dob, gender, country):
+        #Check if the provided ID matches the South African format
+        if len(student_identity_number) == 13 and student_identity_number.isdigit():
+            #extract the relevant components from the ID
+            dob_str = student_identity_number[:6]
+            gender_digit = int(student_identity_number[6])
+            nationality_indicator = int(student_identity_number[10])
+
+            #calculate birthdate
+            year = int("19" + dob_str[:2]) #Assume that year in 20th century
+            month = int(dob_str[2:4])
+            day = int(dob_str[4:])
+            birthdate = datetime.date(year, month, day)
+
+            #calculate age
+            today = datetime.date.today()
+            age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+
+            #determine gender
+            gender = "Male" if gender_digit >=5 else "Female"
+
+            #determine nationality
+            nationality = "South African" if nationality_indicator == 0 else "Permanent Resident"
+
+            #For South African IDs, the country is South Africa
+            country = "South Africa"
+
+            return student_identity_number, age, gender, nationality, country
+        else:
+            #function to calulcate age from date of birth (dob should in YYYYMMDD format)
+            def calculate_age_from_dob(dob):
+                dob_date =datetime.datetime.strptime(dob, '%Y%m%d').date()
+                today = datetime.date.today()
+                age = today.year - dob_date.year - ((today.month, today.day) < (dob_date.month, dob_date.day))
+                return age
+            #If the ID does not match the South African format, use the provided input
+            return student_identity_number, calculate_age_from_dob(dob), gender, "Other", country    
+       
 @csrf_exempt
 def user_registration(request):
     if request.method == 'POST':
@@ -47,6 +86,13 @@ def user_registration(request):
         email_address = data.get('email_address', "")
         residential_address = data.get('residential_address', "")
         student_identity_number = data.get('student_identity_number', "")
+        dob = data.get('dob', "")
+        gender = data.get('gender', "")
+        country = data.get('country', "")
+        age = data.get('age', "")
+        nationality = data.get('nationality', "")
+
+        student_info = ID_validation(student_identity_number,dob,gender,country,age)
         
 
         user = User(
@@ -55,6 +101,11 @@ def user_registration(request):
             email_address=email_address,
             residential_address=residential_address,
             student_identity_number=student_identity_number,
+            dob=dob,
+            gender = gender,
+            country = country,
+            age = age,
+            nationality =nationality,
             
         )
         user.save()
