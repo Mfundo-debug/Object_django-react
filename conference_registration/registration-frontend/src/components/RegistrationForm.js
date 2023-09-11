@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import { useHistory } from "react-router";
+import { useHistory } from "react-router-dom";
 import OIP from "./OIP.jpeg";
-import PersonalInfo from "./PersonalInfo";
-import "./RegistrationForm.css";
+import PersonalInfo from "./PersonalInfo";//
+import "./RegistrationForm.css";//
 
 function RegistrationForm(){
   const history = useHistory();
