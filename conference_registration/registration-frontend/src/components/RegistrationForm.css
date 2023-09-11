@@ -73,3 +73,16 @@ h1 {
     color: #31c5a5; /* Set heading color */
     background-color: #000;
 }
+ 
+.gender-select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #31c5a5; /* Set input border color */
+    border-radius: 4px;
+}
+.country-select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #31c5a5; /* Set input border color */
+    border-radius: 4px;
+}
