@@ -16,6 +16,35 @@ class User(models.Model):
         choices=STUDENT_STATUS_CHOICES,
         default=NEW_STUDENT,
     )
+    GENDER_CHOICES = [
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+    ]
+    COUNTRY_CHOICES = [
+        ('South Africa', 'South Africa'),
+        ('USA', 'USA'),
+        ('UK', 'UK'),
+        ('Canada', 'Canada'),
+        ('Australia', 'Australia'),
+        ('Botswana','Botswana'),
+        ('Zimbabwe', 'Zimbabwe'),
+        ('Germany','Germany'),
+        ('France','France'),
+        ('Japan','Japan'),
+        ('Nigeria','Nigeria'),
+        ('Kenya','Kenya'),
+        ('Ghana','Ghana'),
+        ('Congo','Congo'),
+        ('Egypt','Egypt'),
+        ('Ethiopia','Ethiopia'),
+        ('Morocco','Morocco'),
+        ('India','India'),
+        ('Russia','Russia'),
+        ('Brazil','Brazil'),
+        ('Mexico','Mexico'),
+        ('Argentina','Argentina'),
+        ('Other','Other'),
+    ]
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email_address = models.EmailField(max_length=254)
@@ -23,8 +52,8 @@ class User(models.Model):
     student_identity_number = models.CharField(max_length=10, unique=True)
     system_email = models.EmailField(max_length=254, blank=True, null=True)
     dob = models.DateField(default=timezone.now)
-    gender = models.CharField(max_length=10, null=True)
-    country = models.CharField(max_length=30, null=True)
+    gender = models.CharField(max_length=10, null=True, choices=GENDER_CHOICES)
+    country = models.CharField(max_length=30, null=True, choices=COUNTRY_CHOICES)
     nationality = models.CharField(max_length=30, null=True)
     age = models.IntegerField(null=True)
 
