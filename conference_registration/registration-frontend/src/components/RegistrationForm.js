@@ -22,13 +22,12 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //format the date as "YYYY-MM-DD" for submission to the backend
-    const dob = new Date(formData.dob);
-    const formatted_dob = `${dob.getFullYear()}-${dob.getMonth() + 1}-${dob.getDate()}`;
+    //Format the data as "YYYY-MM-DD" for the API
+    const formattedDate = formData.dob.split("/").reverse().join("-");
     // Add the formatted date to the form data
     setFormData({
       ...formData,
-      dob: formatted_dob,
+      dob: formattedDate,
     });
 
     try {
