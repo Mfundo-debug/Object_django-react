@@ -22,6 +22,14 @@ function RegistrationForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //format the date as "YYYY-MM-DD" for submission to the backend
+    const dob = new Date(formData.dob);
+    const formatted_dob = `${dob.getFullYear()}-${dob.getMonth() + 1}-${dob.getDate()}`;
+    // Add the formatted date to the form data
+    setFormData({
+      ...formData,
+      dob: formatted_dob,
+    });
 
     try {
       // Send a POST request to my Django backend API
