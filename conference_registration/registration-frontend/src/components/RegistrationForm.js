@@ -23,7 +23,7 @@ function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Format the data as "YYYY-MM-DD" for the API
-    const formattedDate = formData.dob.split("/").reverse().join("-");
+    const formattedDate = formData.dob.replaceAll("/", "-");
     // Add the formatted date to the form data
     setFormData({
       ...formData,
