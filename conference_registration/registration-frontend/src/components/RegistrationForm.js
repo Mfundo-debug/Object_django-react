@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
+import ConfirmationPage from "./ConfirmationPage";
 
 function RegistrationForm() {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ function RegistrationForm() {
     age: "",
     //nationality: "",
   });
-
+  const [user_id, setUserId] = useState(null); // [1]
   const handleSubmit = async (e) => {
     e.preventDefault();
     //Format the data as "YYYY-MM-DD" for the API
@@ -40,6 +41,8 @@ function RegistrationForm() {
       if (response.ok) {
         // Registration successful
         const data = await response.json();
+        // Set the user_id state variable to the user_id returned by the API
+        setUserId(data.user_id); // [2]
         navigate(`/confirmation?user_id=${data.user_id}`);
         alert("Registration successful");
         // Clear the form or reset it as needed
@@ -78,6 +81,7 @@ function RegistrationForm() {
         <PersonalInfo formData={formData} setFormData={setFormData} />
         <button type="submit">Submit</button>
       </form>
+      {user_id && <ConfirmationPage user_id={user_id} />} {/* [3] */}
     </div>
   );
 }
