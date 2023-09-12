@@ -112,7 +112,7 @@ def user_registration(request):
             gender = gender,
             country = country,
             age = age,
-            nationality =nationality,
+            nationality=nationality,
             
         )
         user.save()

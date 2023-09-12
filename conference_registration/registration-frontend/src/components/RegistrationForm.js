@@ -14,10 +14,8 @@ function RegistrationForm() {
     residential_address: "",
     student_identity_number: "",
     dob: "",
-    gender: "",
-    country: "",
     age: "",
-    nationality: "",
+    //nationality: "",
   });
 
   const handleSubmit = async (e) => {
@@ -52,15 +50,16 @@ function RegistrationForm() {
           residential_address: "",
           student_identity_number: "",
           dob: "",
-          gender: "",
-          country: "",
           age: "",
-          nationality: "",
+          //nationality: "",
+        
         });
         // Handle the response data if needed
         console.log("Response Data:", data);
       } else {
         // Registration failed
+        //handle error message
+
         alert("Registration failed. Please try again");
       }
     } catch (error) {

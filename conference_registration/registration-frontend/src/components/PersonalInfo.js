@@ -77,22 +77,35 @@ function PersonalInfo({ formData, setFormData }) {
           onChange={handleChange}
         />
         {/* New input fields for dob, gender, and country */}
-        <input type='text' name ='nationality'placeholder='Nationality' value={formData.nationality} onChange={handleChange} />
+        <input 
+          type="text" 
+          name ="nationality"
+          placeholder="Nationality" 
+          value={formData.nationality} 
+          onChange={handleChange} 
+        /> 
         <input
           type="date"
           name="dob"
           placeholder="Date of Birth"
           value={formData.dob}
           onChange={handleChange}
+        /> 
+        {/* Insert Age */}
+        <input
+          type="text"
+          name="age"
+          placeholder="Age"
+          value={formData.age}
+          onChange={handleChange}
         />
-        <select className='gender-select' name="gender" value={formData.gender} onChange={handleChange}>
+        <select className='gender-select' name="gender" value={formData.gender} onChange={handleChange}> 
           <option value="">Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
-        <select className='country-select' name="country" value={formData.country} onChange={handleChange}>
+        <select  className='country-select' name="country" value={formData.country} onChange={handleChange}>
   <option value="">Select Country</option>
-  <option value="Select a Country">Select a Country</option>
   <option value="South Africa">South Africa</option>
   <option value="USA">USA</option>
   <option value="Canada">Canada</option>
@@ -114,7 +127,7 @@ function PersonalInfo({ formData, setFormData }) {
     <option value="Morocco">Morocco</option>
     <option value="Zimbabwe">Zimbabwe</option>
   <option value="Other">Other</option> 
-</select>
+  </select>
 
         {/* Radio buttons for student status */}
         <div>
