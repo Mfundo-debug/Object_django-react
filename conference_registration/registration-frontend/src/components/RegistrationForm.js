@@ -1,13 +1,11 @@
 // RegistrationForm.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import Link
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
-import ConfirmationPage from "./ConfirmationPage";
 
 function RegistrationForm() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -16,12 +14,11 @@ function RegistrationForm() {
     student_identity_number: "",
     dob: "",
     age: "",
-    //nationality: "",
   });
-  const [user_id, setUserId] = useState(null); // [1]
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Format the data as "YYYY-MM-DD" for the API
+    // Format the data as "YYYY-MM-DD" for the API
     const formattedDate = formData.dob.replaceAll("/", "-");
     // Add the formatted date to the form data
     setFormData({
@@ -41,28 +38,12 @@ function RegistrationForm() {
       if (response.ok) {
         // Registration successful
         const data = await response.json();
-        // Set the user_id state variable to the user_id returned by the API
-        setUserId(data.user_id); // [2]
-        navigate(`/confirmation?user_id=${data.user_id}`);
-        alert("Registration successful");
-        // Clear the form or reset it as needed
-        setFormData({
-          first_name: "",
-          last_name: "",
-          email_address: "",
-          residential_address: "",
-          student_identity_number: "",
-          dob: "",
-          age: "",
-          //nationality: "",
-        
-        });
-        // Handle the response data if needed
-        console.log("Response Data:", data);
+        // Redirect to the confirmation page using Link
+        // Use the `to` prop to specify the target URL
+        return <Link to={`/confirmation?user_id=${data.user_id}`} />;
       } else {
         // Registration failed
-        //handle error message
-
+        // Handle error message
         alert("Registration failed. Please try again");
       }
     } catch (error) {
@@ -81,7 +62,6 @@ function RegistrationForm() {
         <PersonalInfo formData={formData} setFormData={setFormData} />
         <button type="submit">Submit</button>
       </form>
-      {user_id && <ConfirmationPage user_id={user_id} />} {/* [3] */}
     </div>
   );
 }
