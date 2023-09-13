@@ -5,6 +5,7 @@ import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
 
+
 function RegistrationForm() {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -15,6 +16,8 @@ function RegistrationForm() {
     dob: "",
     age: "",
   });
+
+const [registrationSuccessful, setRegistrationSuccessful] = useState(false);// track registration status
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +40,7 @@ function RegistrationForm() {
       });
       if (response.ok) {
         // Registration successful
+        setRegistrationSuccessful(true);// set registration status to true
         const data = await response.json();
         // Redirect to the confirmation page using Link
         // Use the `to` prop to specify the target URL
@@ -62,6 +66,12 @@ function RegistrationForm() {
         <PersonalInfo formData={formData} setFormData={setFormData} />
         <button type="submit">Submit</button>
       </form>
+      {registrationSuccessful && (
+        <div className="success-message">
+        Registration successful!{" "}
+        <Link to="/confirmation">Goto confirmation page</Link>
+        </div>
+        )}
     </div>
   );
 }
