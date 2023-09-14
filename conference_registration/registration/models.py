@@ -2,7 +2,8 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils import timezone
-
+from datetime import datetime
+import random
 # Create your models here.
 class User(models.Model):
     NEW_STUDENT = 'New Student'
@@ -45,6 +46,18 @@ class User(models.Model):
         ('Argentina','Argentina'),
         ('Other','Other'),
     ]
+    @staticmethod
+    def generate_user_number():
+        #get current date and time components
+        current_datetime = datetime.now()
+        formatted_datetime = current_datetime.strftime("%y%m%d%H%M%S")
+        #generate a random four digits
+        random_digits = str(random.randint(1000,9999))
+        #combine all components to form the user number
+        user_number = formatted_datetime + random_digits
+        return user_number
+
+
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email_address = models.EmailField(max_length=254)
@@ -56,6 +69,7 @@ class User(models.Model):
     country = models.CharField(max_length=30, null=True, choices=COUNTRY_CHOICES)
     nationality = models.CharField(max_length=30, null=True)
     age = models.IntegerField(null=True)
+    user_number = models.CharField(max_length=16, default=generate_user_number, unique=True)
 
 
     def generate_system_email(first_name, last_name):
