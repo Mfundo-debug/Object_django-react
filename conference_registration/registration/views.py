@@ -7,6 +7,7 @@ from rest_framework import status
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import random
 import datetime
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
@@ -34,9 +35,14 @@ class UserRegistrationView(generics.CreateAPIView):
         else:
             #handle other GET requests here if needed
             return Response({'message': 'This is a GET request!'})
-        
+       
+    
+
     def post(self, request, *args, **kwargs):
         #Handles POST requests here
+        user_number = User.generate_user_number()
+        #include the user_number in the request data
+        request.data['user_number'] = user_number
         return super().post(request, *args, **kwargs)
 
 def options_view(request):
