@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
-
+import GoogleSignInButton from "./GoogleSignInButton";
 function RegistrationForm() {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -36,7 +36,7 @@ function RegistrationForm() {
         alert("Registration successful");
 
         // Use the `history` object to programmatically navigate to the confirmation page
-        window.location.href = `/confirmation?user_id=${data.user_id}`;
+        window.location.href = `/confirmation?user_id=${data.user_number}`;
       } else {
         alert("Registration failed. Please try again");
       }
@@ -54,6 +54,7 @@ function RegistrationForm() {
         <PersonalInfo formData={formData} setFormData={setFormData} />
         <button type="submit">Submit</button>
       </form>
+      <GoogleSignInButton />
     </div>
   );
 }
