@@ -89,9 +89,9 @@ h1 {
 .google-button {
     margin-bottom: 25px;
     padding: 10px;
-    border: 1px solid #3c1ccd; /* Set input border color */
+    border: 1px solid #948fae; /* Set input border color */
     border-radius: 4px;
-    background-color: #31c5a5;
+    background-color: hsl(0, 23%, 90%);
     color: white;
     font-weight: bold;
     cursor: pointer;
