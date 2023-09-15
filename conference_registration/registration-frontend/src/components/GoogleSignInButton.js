@@ -1,18 +1,22 @@
 // GoogleSignInButton.js
 import React from "react";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { app } from "./Configure"; // Import the Firebase app
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth, provider } from "./Configure"; // Import the Firebase app
 import "./RegistrationForm.css";
+import ConfirmationPage from "./ConfirmationPage";
 
 const GoogleSignInButton = () => {
+  const value = localStorage.getItem("user_id");
   const handleGoogleSignIn = async () => {
-    const auth = getAuth(app); // Use the Firebase app
-    const provider = new GoogleAuthProvider();
-
     try {
       const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
       const user = result.user;
-      console.log('Successfully signed in with Google', user);
+      console.log("Successfully signed in with Google", user);
+
+      // Handle the token, if needed
+      console.log("Access token:", token);
 
       // Handle the signed-in user here (e.g., save user data to the database)
       // You can make an API call to your Django backend here to save user data
@@ -36,12 +40,15 @@ const GoogleSignInButton = () => {
         alert("Registration failed. Please try again");
       }
     } catch (error) {
-      console.error('Error signing in with Google', error);
+      console.error("Error signing in with Google", error);
+      alert("An error occurred during sign-in. Please try again later!");
     }
   };
 
   return (
-    <button className="google-button" onClick={handleGoogleSignIn}>Sign in with Google</button>
+    <div className="google-button">
+      {value ? <ConfirmationPage /> : <button onClick={handleGoogleSignIn}>Sign in with Google</button>}
+    </div>
   );
 };
 
