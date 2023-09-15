@@ -36,7 +36,7 @@ function RegistrationForm() {
         alert("Registration successful");
 
         // Use the `history` object to programmatically navigate to the confirmation page
-        window.location.href = `/confirmation?user_id=${data.user_number}`;
+        window.location.href = `/confirmation?user_id=${data.user_id}`;
       } else {
         alert("Registration failed. Please try again");
       }
