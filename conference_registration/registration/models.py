@@ -62,7 +62,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=30)
     email_address = models.EmailField(max_length=254)
     residential_address = models.CharField(max_length=100)
-    student_identity_number = models.CharField(max_length=10, unique=True)
+    student_identity_number = models.CharField(max_length=20, unique=True)
     system_email = models.EmailField(max_length=254, blank=True, null=True)
     dob = models.DateField(default=timezone.now)
     gender = models.CharField(max_length=10, null=True, choices=GENDER_CHOICES)
