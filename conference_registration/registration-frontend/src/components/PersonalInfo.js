@@ -2,7 +2,7 @@ import React from 'react';
 import validator from 'validator';
 import './RegistrationForm.css';
 
-function PersonalInfo({ formData, setFormData }) {
+function PersonalInfo({ formData, setFormData, handleStudentIdentityNumberChange }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -34,8 +34,10 @@ function PersonalInfo({ formData, setFormData }) {
         [name]: value,
       });
     }
+    
   };
 
+ 
   return (
     <div>
       <h1>Personal Information</h1>
