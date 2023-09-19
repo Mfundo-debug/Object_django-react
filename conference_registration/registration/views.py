@@ -87,7 +87,7 @@ def ID_validation(student_identity_number, dob, gender, country):
                 return age
             #If the ID does not match the South African format, use the provided input
             return student_identity_number, calculate_age_from_dob(dob), gender, "Other", country    
-       
+
 @csrf_exempt
 def user_registration(request):
     if request.method == 'POST':
@@ -104,9 +104,8 @@ def user_registration(request):
         age = data.get('age', "")
         nationality = data.get('nationality', "")
 
-        student_info = ID_validation(student_identity_number,dob,gender,country,age)
-        #extract the relevant components from the student_info tuple
-        student_identity_number, age, gender, nationality, country = student_info
+         # Call the ID_validation function to process the student_identity_number
+        student_identity_number, age, gender, nationality, country = ID_validation(student_identity_number, dob, gender, country)
 
         user = User(
             first_name=first_name,
@@ -127,4 +126,10 @@ def user_registration(request):
     else:
         #Return a JSON response with a status code of 405 method not allowed
         return JsonResponse({'message': 'This is a POST request!'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
+
+#create a new API endpoint to calculate student information
+class CalculateStudentInfoView(generics.CreateAPIView):
+    def post(self, request, *args, **kwargs):
+        student_identity_number = request.data.get('student_identity_number')
+        dob, age, gender, _ = ID_validation(student_identity_number)
+        return Response({"dob": dob, "age": age, "gender": gender})    
