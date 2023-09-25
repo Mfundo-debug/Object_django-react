@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from rest_framework import generics
 from .models import User
 from .serializers import UserSerializer
@@ -87,6 +87,28 @@ def ID_validation(student_identity_number, dob, gender, country):
                 return age
             #If the ID does not match the South African format, use the provided input
             return student_identity_number, calculate_age_from_dob(dob), gender, "Other", country    
+
+def validate_user(request):
+    if request.method == 'POST':
+        student_identity_number = request.POST.get('student_identity_number')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        #check if a user with the provided ID exists or names exists
+        try:
+            if student_identity_number:
+                user = User.objects.get(student_identity_number=student_identity_number)
+            elif first_name and last_name:
+                user = User.objects.get(first_name=first_name, last_name=last_name)
+            else:
+                #handle the case where neither ID nor names are provided
+                return render(request, 'validation.html', {'message': 'Please provide either ID or names!'})
+            
+            #if a user is found, redirect to the image capture page
+            return redirect('capture_image', user_number=user.student_identity_number)
+        except User.DoesNotExist:
+            return render(request, 'validation.html', {'message': 'User not found!'})
+        
+    return render(request, 'validation.html')
 
 @csrf_exempt
 def user_registration(request):
