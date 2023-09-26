@@ -12,6 +12,7 @@ import datetime
 from django.http import HttpResponse
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.db.models import Q
 # Create your views here.
 class UserRegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -87,28 +88,37 @@ def ID_validation(student_identity_number, dob, gender, country):
                 return age
             #If the ID does not match the South African format, use the provided input
             return student_identity_number, calculate_age_from_dob(dob), gender, "Other", country    
-
+@csrf_exempt
 def validate_user(request):
     if request.method == 'POST':
         student_identity_number = request.POST.get('student_identity_number')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        #check if a user with the provided ID exists or names exists
-        try:
-            if student_identity_number:
-                user = User.objects.get(student_identity_number=student_identity_number)
-            elif first_name and last_name:
-                user = User.objects.get(first_name=first_name, last_name=last_name)
-            else:
-                #handle the case where neither ID nor names are provided
-                return render(request, 'validation.html', {'message': 'Please provide either ID or names!'})
-            
-            #if a user is found, redirect to the image capture page
-            return redirect('capture_image', user_number=user.student_identity_number)
-        except User.DoesNotExist:
-            return render(request, 'validation.html', {'message': 'User not found!'})
+        if student_identity_number or (first_name and last_name):
+            # Check if a user with the provided ID or names exists
+            try:
+                if student_identity_number:
+                    user = User.objects.get(student_identity_number=student_identity_number)
+                else:
+                    user = User.objects.get(Q(first_name=first_name) & Q(last_name=last_name))
+                
+                user_data = {
+                    'user_id': user.student_identity_number,
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
+                    'email_address': user.email_address,
+                    'residential_address': user.residential_address,
+                    'dob': user.dob,
+                }
+                return JsonResponse({'message': 'User found!', 'user_data': user_data})
+            except User.DoesNotExist:
+                return JsonResponse({'message': 'User not found!'}, status=404)
         
-    return render(request, 'validation.html')
+        else:
+            return JsonResponse({'message': 'Please provide either ID or names!'}, status=400)
+
+    else:
+        return JsonResponse({'message': 'This is a POST request!'}, status=405)
 
 @csrf_exempt
 def user_registration(request):
