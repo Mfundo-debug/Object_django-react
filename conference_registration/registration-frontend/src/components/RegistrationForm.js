@@ -1,9 +1,11 @@
 // RegistrationForm.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
+import UserValidationForm from "./UserValidationForm";
 import GoogleSignInButton from "./GoogleSignInButton";
+
 function RegistrationForm() {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -13,6 +15,7 @@ function RegistrationForm() {
     student_identity_number: "",
     dob: "",
     age: "",
+    gender: "",
   });
 
   const handleSubmit = async (e) => {
@@ -46,15 +49,55 @@ function RegistrationForm() {
     }
   };
 
+  // Function to calculate student information based on student_identity_number
+  const calculateStudentInfo = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/calculate_student_info/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ student_identity_number: formData.student_identity_number }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          ...formData,
+          dob: data.dob,
+          age: data.age,
+          gender: data.gender,
+        });
+      }
+    } catch (error) {
+      console.error("Error calculating student info", error);
+    }
+  };
+
+  // useEffect to call calculateStudentInfo when student_identity_number changes
+  useEffect(() => {
+    if (formData.student_identity_number) {
+      calculateStudentInfo();
+    }
+    // eslint-disable-next-line
+  }, [formData.student_identity_number, calculateStudentInfo]);
+
   return (
-    <div className={"registration-form"}>
-      <h1>Registration Form</h1>
-      <img src={OIP} alt="Logo" className="logo" />
-      <form onSubmit={handleSubmit}>
-        <PersonalInfo formData={formData} setFormData={setFormData} />
-        <button type="submit">Submit</button>
-      </form>
-      <GoogleSignInButton />
+    <div>
+      <div className={"registration-form"}>
+        <h1>Registration Form</h1>
+        <img src={OIP} alt="Logo" className="logo" />
+        <form onSubmit={handleSubmit}>
+          <PersonalInfo formData={formData} setFormData={setFormData} />
+          <button type="submit">Submit</button>
+        </form>
+        <GoogleSignInButton />
+      </div>
+      <div className={"validation-container"}>
+        <div className={"validation-form"}>
+          {/* UserValidationForm component is rendered conditionally based on whether the user is logged in or not */}
+          <UserValidationForm formData={formData} setFormData={setFormData} />
+        </div>
+      </div>
     </div>
   );
 }
