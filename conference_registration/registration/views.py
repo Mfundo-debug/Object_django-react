@@ -101,7 +101,7 @@ def validate_user(request):
                     user = User.objects.get(student_identity_number=student_identity_number)
                 else:
                     user = User.objects.get(Q(first_name=first_name) & Q(last_name=last_name))
-                
+                #needs a fix
                 user_data = {
                     'user_id': user.student_identity_number,
                     'first_name': user.first_name,
