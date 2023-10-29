@@ -1,5 +1,5 @@
 // RegistrationForm.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import OIP from "./OIP.jpeg";
 import PersonalInfo from "./PersonalInfo";
 import "./RegistrationForm.css";
@@ -50,7 +50,7 @@ function RegistrationForm() {
   };
 
   // Function to calculate student information based on student_identity_number
-  const calculateStudentInfo = async () => {
+  const calculateStudentInfo = useCallback(async () => {
     try {
       const response = await fetch("http://localhost:8000/api/calculate_student_info/", {
         method: "POST",
@@ -71,7 +71,13 @@ function RegistrationForm() {
     } catch (error) {
       console.error("Error calculating student info", error);
     }
-  };
+  }, [formData]);
+  
+  useEffect(() => {
+    if (formData.student_identity_number) {
+      calculateStudentInfo();
+    }
+  }, [formData.student_identity_number, calculateStudentInfo]);
 
   // useEffect to call calculateStudentInfo when student_identity_number changes
   useEffect(() => {
