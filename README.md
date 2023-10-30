@@ -35,3 +35,13 @@ Results and evaluation metrics are presented to assess the system's performance,
 ## Conclusion
 
 In conclusion, the System with AI, Object Detection & Computer Vision for Attendance offers a significant advancement in attendance management. Its integration of advanced technologies provides a more accurate and efficient method for tracking student attendance. The system concludes with a call-to-action for further research and development in this field and acknowledges the individuals and organizations that contributed to the system's development.
+
+## Contributing
+
+If you're interested in contributing to this project, please read our [Contribution Guidelines](CONTRIBUTING.md) for more information on how to get started.
+
+## Getting Help
+
+If you need help with this project, please open an issue on GitHub.
+
+Thank you for your contributions to Smart Registration System with AI, Object Detection & Computer Vision for Attendance! We appreciate your help in making our project better.
