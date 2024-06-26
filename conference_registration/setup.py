@@ -8,7 +8,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django==4.2.11',
-        'djangorestframework==3.14.0',
+        'djangorestframework==3.15.2',
         'django-cors-headers==4.2.0',
     ],
     packages=find_packages(),
