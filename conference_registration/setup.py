@@ -7,7 +7,7 @@ setup(
     author='Mfundo-debug Didit',
     include_package_data=True,
     install_requires=[
-        'django==4.2.11',
+        'django==4.2.14',
         'djangorestframework==3.14.0',
         'django-cors-headers==4.2.0',
     ],
